@@ -2,7 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_app/app_theme.dart';
+import 'navigation_home_screen.dart';
+import 'home_screen.dart';
+import 'package:flutter_app/fitness_app/fitness_app_home_screen.dart';
 import 'package:english_words/english_words.dart';
 
 void main() => runApp(MyApp());
@@ -10,13 +16,43 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Platform.isAndroid ? Brightness.dark : Brightness.light,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarDividerColor: Colors.grey,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
     return MaterialApp(
-      title: 'Startup Name Generator',
-      theme: new ThemeData(          // 新增代码开始...
-        primaryColor: Colors.yellow,
+      title: 'Flutter UI',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        textTheme: AppTheme.textTheme,
+        platform: TargetPlatform.iOS,
       ),
-      home: RandomWords(),
+      home: FitnessAppHomeScreen(),
     );
+    // return MaterialApp(
+    //   title: 'Startup Name Generator',
+    //   theme: new ThemeData(          // 新增代码开始...
+    //     primaryColor: Colors.yellow,
+    //   ),
+    //   home: RandomWords(),
+    // );
+  }
+}
+
+class HexColor extends Color {
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
   }
 }
 
