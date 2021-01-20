@@ -33,6 +33,10 @@ dependencies:
   smooth_star_rating: ^1.1.1
   intl: ^0.16.0
 
+  flutter_map: ^0.10.1+1
+  latlong: ^0.6.1
+  flutter_map_marker_popup: ^0.1.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
