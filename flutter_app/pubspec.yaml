@@ -37,6 +37,9 @@ dependencies:
   latlong: ^0.6.1
   flutter_map_marker_popup: ^0.1.4
 
+  lottie: ^0.4.0+1
+  fancy_bottom_navigation: ^0.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -87,6 +90,7 @@ flutter:
     - assets/design_course/
     - assets/fitness_app/
     - assets/hotel/
+    - assets/lottie/
 
   fonts:
     - family: WorkSans

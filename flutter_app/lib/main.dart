@@ -13,7 +13,12 @@ import 'package:english_words/english_words.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_app/flutter_map_marker_cluster.dart';
+import 'package:flutter_app/splash_screen.dart';
+import 'package:flutter_app/login_screen.dart';
 import 'package:latlong/latlong.dart';
+import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:flutter_app/navigation_home_screen.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -29,6 +34,11 @@ class MyApp extends StatelessWidget {
       systemNavigationBarDividerColor: Colors.grey,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
+    final routes = <String, WidgetBuilder>{
+      LoginScreen.tag: (context) => LoginScreen(),
+      HomeScreen.tag: (context) => HomeScreen(),
+    };
+
     return MaterialApp(
       title: 'Flutter UI',
       debugShowCheckedModeBanner: false,
@@ -37,7 +47,8 @@ class MyApp extends StatelessWidget {
         textTheme: AppTheme.textTheme,
         platform: TargetPlatform.iOS,
       ),
-      home: HomePage(),
+      home: SplashPage(),
+      routes: routes,
     );
     // return MaterialApp(
     //   title: 'Startup Name Generator',
@@ -158,12 +169,15 @@ class _RandomWordsState extends State<RandomWords> {
   }
 }
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
+  static String tag = 'home-page';
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
+  int currentPage = 0;
+  final GlobalKey _bottomNavigationKey = GlobalKey();
   final PopupController _popupController = PopupController();
   final MapController _mapController = MapController();
   List<Marker> markers;
@@ -171,7 +185,7 @@ class _HomePageState extends State<HomePage> {
   double zoom = 8;
   double maxZoom = 14;
   double minZoom = 2;
-  LatLng center = LatLng(25.033671, 121.564427);
+  LatLng center = LatLng(23.97565, 120.97388);
 
   @override
   void initState() {
@@ -345,6 +359,29 @@ class _HomePageState extends State<HomePage> {
           //   },
           // ),
         ],
+      ),
+      bottomNavigationBar: FancyBottomNavigation(
+        tabs: [
+          TabData(
+              iconData: Icons.warning,
+              title: "Warning",
+              onclick: () {
+                final FancyBottomNavigationState fState = _bottomNavigationKey.currentState;
+                fState.setPage(0);
+              }),
+          TabData(
+              iconData: Icons.home,
+              title: "Home",
+              onclick: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => NavigationHomeScreen()))),
+          TabData(iconData: Icons.dashboard, title: "Dashboard")
+        ],
+        initialSelection: 1,
+        key: _bottomNavigationKey,
+        onTabChangedListener: (position) {
+          setState(() {
+            currentPage = position;
+          });
+        },
       ),
     );
   }
